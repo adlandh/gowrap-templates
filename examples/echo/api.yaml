@@ -1,0 +1,62 @@
+openapi: "3.0.2"
+info:
+  title: Some API
+  version: "1.0"
+servers:
+  - url: https://localhost:1234/
+components:
+  schemas:
+    result:
+      required: [ result ]
+      type: object
+      properties:
+        result:
+          description: Result Ok
+          type: string
+paths:
+  /greeting:
+    get:
+      operationId: getGreeting
+      description: get greeting
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/result'
+
+  /greeting/{greeting}:
+    post:
+      operationId: setGreeting
+      description: set greeting
+      parameters:
+        - name: greeting
+          schema:
+            type: string
+          in: path
+          required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/result'
+  /hello/{name}:
+    get:
+      operationId: getHello
+      description: get hello (greeting + name)
+      parameters:
+        - name: name
+          schema:
+            type: string
+          in: path
+          required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/result'
