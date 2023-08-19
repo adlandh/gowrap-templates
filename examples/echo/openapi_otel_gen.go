@@ -7,11 +7,46 @@ package main
 //go:generate gowrap gen -p github.com/adlandh/gowrap-templates/examples/echo -i ServerInterface -t https://raw.githubusercontent.com/adlandh/gowrap-templates/main/echo-otel.gotmpl -o openapi_otel_gen.go -l ""
 
 import (
+	"context"
+	"encoding/json"
+	"net/http"
+
 	"github.com/labstack/echo/v4"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/trace"
 )
+
+func defaultSpanDecorator(span trace.Span, params, results map[string]interface{}) {
+	for p := range params {
+		switch params[p].(type) {
+		case context.Context:
+		case *http.Request:
+			span.SetAttributes(attribute.String("param."+p+".method", params[p].(*http.Request).Method))
+			val, _ := json.Marshal(params[p].(*http.Request).Header)
+			span.SetAttributes(attribute.String("param."+p+".headers", string(val)))
+		case *http.Response:
+			val, _ := json.Marshal(params[p].(*http.Response).Header)
+			span.SetAttributes(attribute.String("param."+p+".headers", string(val)))
+		case echo.Context:
+		default:
+			val, _ := json.Marshal(params[p])
+			span.SetAttributes(attribute.String("param."+p, string(val)))
+		}
+	}
+
+	for p := range results {
+		switch results[p].(type) {
+		case context.Context:
+		case *http.Response:
+			val, _ := json.Marshal(results[p].(*http.Response).Header)
+			span.SetAttributes(attribute.String("result."+p+".headers", string(val)))
+		default:
+			val, _ := json.Marshal(results[p])
+			span.SetAttributes(attribute.String("result."+p, string(val)))
+		}
+	}
+}
 
 // ServerInterfaceWithTracing implements ServerInterface interface instrumented with opentracing spans
 type ServerInterfaceWithTracing struct {
@@ -29,6 +64,8 @@ func NewServerInterfaceWithTracing(base ServerInterface, instance string, spanDe
 
 	if len(spanDecorator) > 0 && spanDecorator[0] != nil {
 		d._spanDecorator = spanDecorator[0]
+	} else {
+		d._spanDecorator = defaultSpanDecorator
 	}
 
 	return d
