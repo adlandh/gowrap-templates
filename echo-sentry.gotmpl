@@ -1,0 +1,83 @@
+import (
+    "context"
+    "encoding/json"
+    "net/http"
+
+    "github.com/getsentry/sentry-go"
+    "github.com/labstack/echo/v4"
+)
+
+{{ $decorator := (or .Vars.DecoratorName (printf "%sWithSentry" .Interface.Name)) }}
+
+// {{$decorator}} implements {{.Interface.Type}} interface instrumented with opentracing spans
+type {{$decorator}} struct {
+    {{.Interface.Type}}
+    _instance string
+}
+
+// New{{$decorator}} returns {{$decorator}}
+func New{{$decorator}} (base {{.Interface.Type}}, instance string) {{$decorator}} {
+    d := {{$decorator}} {
+        {{.Interface.Name}}: base,
+        _instance: instance,
+    }
+
+    return d
+}
+
+func (_d {{$decorator}}) _spanDecorator(span *sentry.Span, params, results map[string]interface{}) {
+    for p := range params {
+        switch params[p].(type) {
+        case context.Context:
+        case *http.Request:
+            span.SetTag("param."+p+".method", params[p].(*http.Request).Method)
+            val, _ := json.Marshal(params[p].(*http.Request).Header)
+            span.SetTag("param."+p+".headers", string(val))
+        case *http.Response:
+            val, _ := json.Marshal(params[p].(*http.Response).Header)
+            span.SetTag("param."+p+".headers", string(val))
+        case echo.Context:
+        default:
+            val, _ := json.Marshal(params[p])
+            span.SetTag("param."+p, string(val))
+        }
+    }
+
+    for p := range results {
+        switch results[p].(type) {
+        case context.Context:
+        case *http.Response:
+            val, _ := json.Marshal(results[p].(*http.Response).Header)
+            span.SetTag("result."+p+".headers", string(val))
+        default:
+            val, _ := json.Marshal(results[p])
+            span.SetTag("result."+p, string(val))
+        }
+    }
+}
+
+
+{{range $method := .Interface.Methods}}
+    {{if $method.AcceptsContext}}
+        // {{$method.Name}} implements {{$.Interface.Type}}
+        func (_d {{$decorator}}) {{$method.Declaration}} {
+                request := ctx.Request()
+                savedCtx := request.Context()
+                span := sentry.StartSpan(savedCtx, _d._instance+".{{$.Interface.Type}}.{{$method.Name}}", sentry.TransactionName("{{$.Interface.Type}}.{{$method.Name}}"))
+                ctxNew := span.Context()
+
+                defer func() {
+                    _d._spanDecorator(span, {{$method.ParamsMap}}, {{$method.ResultsMap}})
+                    {{- if $method.ReturnsError}}
+                    if err != nil {
+                        span.SetTag("event", "error")
+                        span.SetTag("message", err.Error())
+                    }
+                    {{end}}
+                    span.Finish()
+                }()
+            ctx.SetRequest(request.WithContext(ctxNew))
+            {{$method.Pass (printf "_d.%s." $.Interface.Name) }}
+        }
+    {{end}}
+{{end}}

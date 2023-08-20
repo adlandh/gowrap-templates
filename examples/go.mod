@@ -4,7 +4,9 @@ go 1.18
 
 require (
 	github.com/adlandh/echo-otel-middleware v0.1.0
+	github.com/adlandh/echo-sentry-middleware v0.0.2
 	github.com/deepmap/oapi-codegen v1.13.4
+	github.com/getsentry/sentry-go v0.23.0
 	github.com/labstack/echo/v4 v4.11.1
 	go.opentelemetry.io/otel v1.16.0
 	go.opentelemetry.io/otel/exporters/jaeger v1.16.0
