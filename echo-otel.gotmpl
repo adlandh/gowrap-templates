@@ -9,7 +9,32 @@ import (
     "go.opentelemetry.io/otel/trace"
 )
 
-func defaultSpanDecorator(span trace.Span, params, results map[string]interface{}) {
+{{ $decorator := (or .Vars.DecoratorName (printf "%sWithTracing" .Interface.Name)) }}
+
+// {{$decorator}} implements {{.Interface.Type}} interface instrumented with opentracing spans
+type {{$decorator}} struct {
+    {{.Interface.Type}}
+    _instance string
+    _spanDecorator func(span trace.Span, params, results map[string]interface{})
+}
+
+// New{{$decorator}} returns {{$decorator}}
+func New{{$decorator}} (base {{.Interface.Type}}, instance string, spanDecorator ...func(span trace.Span, params, results map[string]interface{})) {{$decorator}} {
+    d := {{$decorator}} {
+        {{.Interface.Name}}: base,
+        _instance: instance,
+    }
+
+    if len(spanDecorator) > 0 && spanDecorator[0] != nil {
+        d._spanDecorator = spanDecorator[0]
+    } else {
+        d._spanDecorator = d._defaultSpanDecorator
+    }
+
+    return d
+}
+
+func (_d {{$decorator}}) _defaultSpanDecorator(span trace.Span, params, results map[string]interface{}) {
     for p := range params {
         switch params[p].(type) {
             case context.Context:
@@ -33,37 +58,13 @@ func defaultSpanDecorator(span trace.Span, params, results map[string]interface{
             case *http.Response:
                 val, _ := json.Marshal(results[p].(*http.Response).Header)
                 span.SetAttributes(attribute.String("result."+p+".headers", string(val)))
-            default:
-                val, _ := json.Marshal(results[p])
-                span.SetAttributes(attribute.String("result."+p, string(val)))
+        default:
+            val, _ := json.Marshal(results[p])
+            span.SetAttributes(attribute.String("result."+p, string(val)))
         }
     }
 }
 
-{{ $decorator := (or .Vars.DecoratorName (printf "%sWithTracing" .Interface.Name)) }}
-
-// {{$decorator}} implements {{.Interface.Type}} interface instrumented with opentracing spans
-type {{$decorator}} struct {
-    {{.Interface.Type}}
-    _instance string
-    _spanDecorator func(span trace.Span, params, results map[string]interface{})
-}
-
-// New{{$decorator}} returns {{$decorator}}
-func New{{$decorator}} (base {{.Interface.Type}}, instance string, spanDecorator ...func(span trace.Span, params, results map[string]interface{})) {{$decorator}} {
-    d := {{$decorator}} {
-        {{.Interface.Name}}: base,
-        _instance: instance,
-    }
-
-    if len(spanDecorator) > 0 && spanDecorator[0] != nil {
-        d._spanDecorator = spanDecorator[0]
-    } else {
-        d._spanDecorator = defaultSpanDecorator
-    }
-
-    return d
-}
 
 {{range $method := .Interface.Methods}}
     {{if $method.AcceptsContext}}

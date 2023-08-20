@@ -3,7 +3,7 @@ info:
   title: Some API
   version: "1.0"
 servers:
-  - url: https://localhost:1234/
+  - url: http://localhost:1234/
 components:
   schemas:
     result:
