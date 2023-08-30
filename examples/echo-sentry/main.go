@@ -32,7 +32,7 @@ func main() {
 			IsBodyDump: true,
 		}))
 
-	app := NewAppInterfaceWithSentry(&App{"Hello"}, "app")
+	app := NewAppInterfaceWithSentry[string](&App{"Hello"}, "app")
 
 	handlers := NewServerInterfaceWithSentry(NewHandlers(app), "handlers")
 

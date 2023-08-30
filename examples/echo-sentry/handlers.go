@@ -9,10 +9,10 @@ import (
 var _ ServerInterface = (*Handlers)(nil)
 
 type Handlers struct {
-	app AppInterface
+	app AppInterface[string]
 }
 
-func NewHandlers(app AppInterface) *Handlers {
+func NewHandlers(app AppInterface[string]) *Handlers {
 	return &Handlers{app: app}
 }
 

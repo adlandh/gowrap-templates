@@ -8,7 +8,7 @@ import (
 type AppInterface[T any] interface {
 	SetGreeting(ctx context.Context, greeting T) (err error)
 	GetGreeting(ctx context.Context) (greeting T)
-	GenFullGreeting(ctx context.Context, name T) (greeting T, err error)
+	GenFullGreeting(ctx context.Context, name T) (greeting string, err error)
 }
 
 var _ AppInterface[string] = (*App)(nil)

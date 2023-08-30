@@ -9,23 +9,31 @@ import (
 var _ ServerInterface = (*Handlers)(nil)
 
 type Handlers struct {
-	Greeting string
+	app AppInterface[string]
 }
 
-func NewHandlers() *Handlers {
-	return &Handlers{Greeting: "Hello"}
+func NewHandlers(app AppInterface[string]) *Handlers {
+	return &Handlers{app: app}
 }
 
 func (h *Handlers) GetGreeting(ctx echo.Context) error {
-	return ctx.JSON(http.StatusOK, Result{Result: h.Greeting})
+	return ctx.JSON(http.StatusOK, Result{Result: h.app.GetGreeting(ctx.Request().Context())})
 }
 
 func (h *Handlers) SetGreeting(ctx echo.Context, greeting string) error {
-	h.Greeting = greeting
+	err := h.app.SetGreeting(ctx.Request().Context(), greeting)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
 
-	return ctx.JSON(http.StatusOK, Result{Result: h.Greeting})
+	return ctx.JSON(http.StatusOK, Result{Result: h.app.GetGreeting(ctx.Request().Context())})
 }
 
 func (h *Handlers) GetHello(ctx echo.Context, name string) error {
-	return ctx.JSON(http.StatusOK, Result{Result: h.Greeting + ", " + name + "!"})
+	greeting, err := h.app.GenFullGreeting(ctx.Request().Context(), name)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
+
+	return ctx.JSON(http.StatusOK, Result{Result: greeting})
 }

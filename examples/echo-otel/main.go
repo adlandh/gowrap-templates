@@ -39,7 +39,9 @@ func main() {
 	otel.SetTracerProvider(tp)
 	otel.SetTextMapPropagator(propagation.NewCompositeTextMapPropagator(propagation.TraceContext{}, propagation.Baggage{}))
 
-	handlers := NewServerInterfaceWithTracing(NewHandlers(), "handlers")
+	app := NewAppInterfaceWithTracing[string](&App{"Hello"}, "app")
+
+	handlers := NewServerInterfaceWithTracing(NewHandlers(app), "handlers")
 
 	e := echo.New()
 	e.Use(echo_otel_middleware.MiddlewareWithConfig(

@@ -6,12 +6,12 @@ import (
 	"go.uber.org/zap"
 )
 
-type SomeInterface interface {
-	SetGreeting(greeting string) (err error)
-	Run(name string) (err error)
+type SomeInterface[T any] interface {
+	SetGreeting(greeting T) (err error)
+	Run(name T) (err error)
 }
 
-var _ SomeInterface = (*SomeStruct)(nil)
+var _ SomeInterface[string] = (*SomeStruct)(nil)
 
 type SomeStruct struct {
 	Greeting string
@@ -43,7 +43,7 @@ func main() {
 		panic(err)
 	}
 
-	someApp := NewSomeInterfaceWithZap(&SomeStruct{}, logger)
+	someApp := NewSomeInterfaceWithZap[string](&SomeStruct{}, logger)
 
 	// happy run
 	_ = someApp.SetGreeting("Hello")
