@@ -12,16 +12,16 @@ type {{$decorator}}{{.Interface.Generics.Types}} struct {
 }
 
 // New{{$decorator}} instruments an implementation of the {{.Interface.Type}} with simple logging
-func New{{$decorator}}{{.Interface.Generics.Types}}(base {{.Interface.Type}}{{.Interface.Generics.Params}}, log *zap.Logger) {{$decorator}}{{.Interface.Generics.Params}} {
-  return {{$decorator}}{{.Interface.Generics.Params}}{
+func New{{$decorator}}{{.Interface.Generics.Types}}(base {{.Interface.Type}}{{$.Interface.Generics.Params}}, log *zap.Logger) {{$decorator}}{{.Interface.Generics.Params}} {
+  return {{$decorator}}{{$.Interface.Generics.Params}}{
     _base: base,
     _log: log,
   }
 }
 
 {{range $method := .Interface.Methods}}
-  // {{$method.Name}} implements {{.Interface.Type}}
-  func (_d {{$decorator}}{{.Interface.Generics.Params}}) {{$method.Declaration}} {
+  // {{$method.Name}} implements {{$.Interface.Type}}
+  func (_d {{$decorator}}{{$.Interface.Generics.Params}}) {{$method.Declaration}} {
       {{- if $method.HasParams}}
         _d._log.Debug("{{$decorator}}: calling {{$method.Name}}", zap.Any("params", {{$method.ParamsMap}}))
       {{else}}

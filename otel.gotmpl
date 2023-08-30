@@ -16,8 +16,8 @@ type {{$decorator}}{{.Interface.Generics.Types}} struct {
 }
 
 // New{{$decorator}} returns {{$decorator}}
-func New{{$decorator}}{{.Interface.Generics.Types}} (base {{.Interface.Type}}{{.Interface.Generics.Params}}, instance string, spanDecorator ...func(span trace.Span, params, results map[string]interface{})) {{$decorator}}{{.Interface.Generics.Params}} {
-  d := {{$decorator}}{{.Interface.Generics.Params}} {
+func New{{$decorator}}{{.Interface.Generics.Types}} (base {{.Interface.Type}}{{$.Interface.Generics.Params}}, instance string, spanDecorator ...func(span trace.Span, params, results map[string]interface{})) {{$decorator}}{{.Interface.Generics.Params}} {
+  d := {{$decorator}}{{$.Interface.Generics.Params}} {
     {{.Interface.Name}}: base,
     _instance: instance,
   }
@@ -31,7 +31,7 @@ func New{{$decorator}}{{.Interface.Generics.Types}} (base {{.Interface.Type}}{{.
   return d
 }
 
-func (_d {{$decorator}}{{.Interface.Generics.Params}}) _defaultSpanDecorator(span trace.Span, params, results map[string]interface{}) {
+func (_d {{$decorator}}{{$.Interface.Generics.Params}}) _defaultSpanDecorator(span trace.Span, params, results map[string]interface{}) {
   for p := range params {
     switch params[p].(type) {
       case context.Context:
@@ -53,9 +53,9 @@ func (_d {{$decorator}}{{.Interface.Generics.Params}}) _defaultSpanDecorator(spa
 
 {{range $method := .Interface.Methods}}
   {{if $method.AcceptsContext}}
-    // {{$method.Name}} implements {{.Interface.Type}}
-func (_d {{$decorator}}{{.Interface.Generics.Params}}) {{$method.Declaration}} {
-  ctx, _span := otel.Tracer(_d._instance).Start(ctx, "{{.Interface.Type}}.{{$method.Name}}")
+    // {{$method.Name}} implements {{$.Interface.Type}}
+func (_d {{$decorator}}{{$.Interface.Generics.Params}}) {{$method.Declaration}} {
+  ctx, _span := otel.Tracer(_d._instance).Start(ctx, "{{$.Interface.Type}}.{{$method.Name}}")
   defer func() {
     if _d._spanDecorator != nil {
       _d._spanDecorator(_span, {{$method.ParamsMap}}, {{$method.ResultsMap}})
@@ -69,7 +69,7 @@ func (_d {{$decorator}}{{.Interface.Generics.Params}}) {{$method.Declaration}} {
     {{end}}
     _span.End()
   }()
-  {{$method.Pass (printf "_d.%s." .Interface.Name) }}
+  {{$method.Pass (printf "_d.%s." $.Interface.Name) }}
 }
   {{end}}
 {{end}}
