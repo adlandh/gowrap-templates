@@ -6,22 +6,22 @@ import (
 {{ $decorator := (or .Vars.DecoratorName (printf "%sWithZap" .Interface.Name)) }}
 
 // {{$decorator}} implements {{.Interface.Type}} that is instrumented with zap logger
-type {{$decorator}} struct {
+type {{$decorator}}{{.Interface.Generics.Types}} struct {
+  _base {{.Interface.Type}}{{.Interface.Generics.Params}}
   _log *zap.Logger
-  _base {{.Interface.Type}}
 }
 
 // New{{$decorator}} instruments an implementation of the {{.Interface.Type}} with simple logging
-func New{{$decorator}}(base {{.Interface.Type}}, log *zap.Logger) {{$decorator}} {
-  return {{$decorator}}{
+func New{{$decorator}}{{.Interface.Generics.Types}}(base {{.Interface.Type}}{{.Interface.Generics.Params}}, log *zap.Logger) {{$decorator}}{{.Interface.Generics.Params}} {
+  return {{$decorator}}{{.Interface.Generics.Params}}{
     _base: base,
     _log: log,
   }
 }
 
 {{range $method := .Interface.Methods}}
-  // {{$method.Name}} implements {{$.Interface.Type}}
-  func (_d {{$decorator}}) {{$method.Declaration}} {
+  // {{$method.Name}} implements {{.Interface.Type}}
+  func (_d {{$decorator}}{{.Interface.Generics.Params}}) {{$method.Declaration}} {
       {{- if $method.HasParams}}
         _d._log.Debug("{{$decorator}}: calling {{$method.Name}}", zap.Any("params", {{$method.ParamsMap}}))
       {{else}}
