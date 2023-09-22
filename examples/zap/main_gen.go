@@ -30,7 +30,7 @@ func (_d SomeInterfaceWithZap[T]) Run(name T) (err error) {
 		"name": name}))
 	defer func() {
 		if err != nil {
-			_d._log.Error("SomeInterfaceWithZap: method Run returned an error", zap.Error(err), zap.Any("result", map[string]interface{}{
+			_d._log.Warn("SomeInterfaceWithZap: method Run returned an error", zap.Error(err), zap.Any("result", map[string]interface{}{
 				"err": err}))
 		} else {
 			_d._log.Debug("SomeInterfaceWithZap: method Run finished", zap.Any("result", map[string]interface{}{
@@ -46,7 +46,7 @@ func (_d SomeInterfaceWithZap[T]) SetGreeting(greeting T) (err error) {
 		"greeting": greeting}))
 	defer func() {
 		if err != nil {
-			_d._log.Error("SomeInterfaceWithZap: method SetGreeting returned an error", zap.Error(err), zap.Any("result", map[string]interface{}{
+			_d._log.Warn("SomeInterfaceWithZap: method SetGreeting returned an error", zap.Error(err), zap.Any("result", map[string]interface{}{
 				"err": err}))
 		} else {
 			_d._log.Debug("SomeInterfaceWithZap: method SetGreeting finished", zap.Any("result", map[string]interface{}{
