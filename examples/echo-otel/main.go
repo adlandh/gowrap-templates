@@ -49,7 +49,7 @@ func main() {
 			AreHeadersDump: true,
 			IsBodyDump:     true,
 			LimitHTTPBody:  true,
-			LimitSize:      60_000,
+			LimitSize:      200,
 		}))
 
 	RegisterHandlers(e, handlers)

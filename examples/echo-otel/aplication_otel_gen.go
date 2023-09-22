@@ -8,10 +8,9 @@ package main
 
 import (
 	"context"
-	"encoding/json"
 
+	helpers "github.com/adlandh/gowrap-templates/helpers/otel"
 	"go.opentelemetry.io/otel"
-	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/trace"
 )
 
@@ -32,50 +31,21 @@ func NewAppInterfaceWithTracing[T any](base AppInterface[T], instance string, sp
 	if len(spanDecorator) > 0 && spanDecorator[0] != nil {
 		d._spanDecorator = spanDecorator[0]
 	} else {
-		d._spanDecorator = d._defaultSpanDecorator
+		d._spanDecorator = helpers.SpanDecorator
 	}
 
 	return d
-}
-
-func (_d AppInterfaceWithTracing[T]) _defaultSpanDecorator(span trace.Span, params, results map[string]interface{}) {
-	for p := range params {
-		switch params[p].(type) {
-		case context.Context:
-		default:
-			val, _ := json.Marshal(params[p])
-			span.SetAttributes(attribute.String("param."+p, string(val)))
-		}
-	}
-
-	for p := range results {
-		switch results[p].(type) {
-		case context.Context:
-		default:
-			val, _ := json.Marshal(results[p])
-			span.SetAttributes(attribute.String("result."+p, string(val)))
-		}
-	}
 }
 
 // GenFullGreeting implements AppInterface
 func (_d AppInterfaceWithTracing[T]) GenFullGreeting(ctx context.Context, name T) (greeting string, err error) {
 	ctx, _span := otel.Tracer(_d._instance).Start(ctx, "AppInterface.GenFullGreeting")
 	defer func() {
-		if _d._spanDecorator != nil {
-			_d._spanDecorator(_span, map[string]interface{}{
-				"ctx":  ctx,
-				"name": name}, map[string]interface{}{
-				"greeting": greeting,
-				"err":      err})
-		} else if err != nil {
-			_span.RecordError(err)
-			_span.SetAttributes(
-				attribute.String("event", "error"),
-				attribute.String("message", err.Error()),
-			)
-		}
-
+		_d._spanDecorator(_span, map[string]interface{}{
+			"ctx":  ctx,
+			"name": name}, map[string]interface{}{
+			"greeting": greeting,
+			"err":      err})
 		_span.End()
 	}()
 	return _d.AppInterface.GenFullGreeting(ctx, name)
@@ -85,11 +55,9 @@ func (_d AppInterfaceWithTracing[T]) GenFullGreeting(ctx context.Context, name T
 func (_d AppInterfaceWithTracing[T]) GetGreeting(ctx context.Context) (greeting T) {
 	ctx, _span := otel.Tracer(_d._instance).Start(ctx, "AppInterface.GetGreeting")
 	defer func() {
-		if _d._spanDecorator != nil {
-			_d._spanDecorator(_span, map[string]interface{}{
-				"ctx": ctx}, map[string]interface{}{
-				"greeting": greeting})
-		}
+		_d._spanDecorator(_span, map[string]interface{}{
+			"ctx": ctx}, map[string]interface{}{
+			"greeting": greeting})
 		_span.End()
 	}()
 	return _d.AppInterface.GetGreeting(ctx)
@@ -99,19 +67,10 @@ func (_d AppInterfaceWithTracing[T]) GetGreeting(ctx context.Context) (greeting 
 func (_d AppInterfaceWithTracing[T]) SetGreeting(ctx context.Context, greeting T) (err error) {
 	ctx, _span := otel.Tracer(_d._instance).Start(ctx, "AppInterface.SetGreeting")
 	defer func() {
-		if _d._spanDecorator != nil {
-			_d._spanDecorator(_span, map[string]interface{}{
-				"ctx":      ctx,
-				"greeting": greeting}, map[string]interface{}{
-				"err": err})
-		} else if err != nil {
-			_span.RecordError(err)
-			_span.SetAttributes(
-				attribute.String("event", "error"),
-				attribute.String("message", err.Error()),
-			)
-		}
-
+		_d._spanDecorator(_span, map[string]interface{}{
+			"ctx":      ctx,
+			"greeting": greeting}, map[string]interface{}{
+			"err": err})
 		_span.End()
 	}()
 	return _d.AppInterface.SetGreeting(ctx, greeting)
