@@ -38,7 +38,7 @@ func NewAppInterfaceWithSentry[T any](base AppInterface[T], instance string, spa
 
 // GenFullGreeting implements AppInterface
 func (_d AppInterfaceWithSentry[T]) GenFullGreeting(ctx context.Context, name T) (greeting T, err error) {
-	span := sentry.StartSpan(ctx, _d._instance+".AppInterface.GenFullGreeting", sentry.TransactionName("AppInterface.GenFullGreeting"))
+	span := sentry.StartSpan(ctx, _d._instance+".AppInterface.GenFullGreeting", sentry.WithTransactionName("AppInterface.GenFullGreeting"))
 	ctx = span.Context()
 
 	defer func() {
@@ -54,7 +54,7 @@ func (_d AppInterfaceWithSentry[T]) GenFullGreeting(ctx context.Context, name T)
 
 // GetGreeting implements AppInterface
 func (_d AppInterfaceWithSentry[T]) GetGreeting(ctx context.Context) (greeting T) {
-	span := sentry.StartSpan(ctx, _d._instance+".AppInterface.GetGreeting", sentry.TransactionName("AppInterface.GetGreeting"))
+	span := sentry.StartSpan(ctx, _d._instance+".AppInterface.GetGreeting", sentry.WithTransactionName("AppInterface.GetGreeting"))
 	ctx = span.Context()
 
 	defer func() {
@@ -68,7 +68,7 @@ func (_d AppInterfaceWithSentry[T]) GetGreeting(ctx context.Context) (greeting T
 
 // SetGreeting implements AppInterface
 func (_d AppInterfaceWithSentry[T]) SetGreeting(ctx context.Context, greeting T) (err error) {
-	span := sentry.StartSpan(ctx, _d._instance+".AppInterface.SetGreeting", sentry.TransactionName("AppInterface.SetGreeting"))
+	span := sentry.StartSpan(ctx, _d._instance+".AppInterface.SetGreeting", sentry.WithTransactionName("AppInterface.SetGreeting"))
 	ctx = span.Context()
 
 	defer func() {

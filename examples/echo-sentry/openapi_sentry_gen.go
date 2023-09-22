@@ -39,7 +39,7 @@ func NewServerInterfaceWithSentry(base ServerInterface, instance string, spanDec
 func (_d ServerInterfaceWithSentry) GetGreeting(ctx echo.Context) (err error) {
 	request := ctx.Request()
 	savedCtx := request.Context()
-	span := sentry.StartSpan(savedCtx, _d._instance+".ServerInterface.GetGreeting", sentry.TransactionName("ServerInterface.GetGreeting"))
+	span := sentry.StartSpan(savedCtx, _d._instance+".ServerInterface.GetGreeting", sentry.WithTransactionName("ServerInterface.GetGreeting"))
 	ctxNew := span.Context()
 
 	defer func() {
@@ -56,7 +56,7 @@ func (_d ServerInterfaceWithSentry) GetGreeting(ctx echo.Context) (err error) {
 func (_d ServerInterfaceWithSentry) SayHello(ctx echo.Context, name string) (err error) {
 	request := ctx.Request()
 	savedCtx := request.Context()
-	span := sentry.StartSpan(savedCtx, _d._instance+".ServerInterface.SayHello", sentry.TransactionName("ServerInterface.SayHello"))
+	span := sentry.StartSpan(savedCtx, _d._instance+".ServerInterface.SayHello", sentry.WithTransactionName("ServerInterface.SayHello"))
 	ctxNew := span.Context()
 
 	defer func() {
@@ -74,7 +74,7 @@ func (_d ServerInterfaceWithSentry) SayHello(ctx echo.Context, name string) (err
 func (_d ServerInterfaceWithSentry) SetGreeting(ctx echo.Context, greeting string) (err error) {
 	request := ctx.Request()
 	savedCtx := request.Context()
-	span := sentry.StartSpan(savedCtx, _d._instance+".ServerInterface.SetGreeting", sentry.TransactionName("ServerInterface.SetGreeting"))
+	span := sentry.StartSpan(savedCtx, _d._instance+".ServerInterface.SetGreeting", sentry.WithTransactionName("ServerInterface.SetGreeting"))
 	ctxNew := span.Context()
 
 	defer func() {
