@@ -36,7 +36,7 @@ func New{{$decorator}} (base {{.Interface.Type}}, instance string, spanDecorator
         func (_d {{$decorator}}) {{$method.Declaration}} {
                 request := ctx.Request()
                 savedCtx := request.Context()
-                span := sentry.StartSpan(savedCtx, _d._instance+".{{$.Interface.Type}}.{{$method.Name}}", sentry.TransactionName("{{$.Interface.Type}}.{{$method.Name}}"))
+                span := sentry.StartSpan(savedCtx, _d._instance+".{{$.Interface.Type}}.{{$method.Name}}", sentry.WithTransactionName("{{$.Interface.Type}}.{{$method.Name}}"))
                 ctxNew := span.Context()
 
                 defer func() {

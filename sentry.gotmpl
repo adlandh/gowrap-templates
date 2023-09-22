@@ -34,7 +34,7 @@ func New{{$decorator}}{{.Interface.Generics.Types}} (base {{.Interface.Type}}{{$
     {{if $method.AcceptsContext}}
         // {{$method.Name}} implements {{$.Interface.Type}}
         func (_d {{$decorator}}{{$.Interface.Generics.Params}}) {{$method.Declaration}} {
-                span := sentry.StartSpan(ctx, _d._instance+".{{$.Interface.Type}}.{{$method.Name}}", sentry.TransactionName("{{$.Interface.Type}}.{{$method.Name}}"))
+                span := sentry.StartSpan(ctx, _d._instance+".{{$.Interface.Type}}.{{$method.Name}}", sentry.WithTransactionName("{{$.Interface.Type}}.{{$method.Name}}"))
                 ctx = span.Context()
 
                 defer func() {
