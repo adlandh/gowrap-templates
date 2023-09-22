@@ -8,8 +8,8 @@ package main
 
 import (
 	"context"
-	"encoding/json"
 
+	helpers "github.com/adlandh/gowrap-templates/helpers/sentry"
 	"github.com/getsentry/sentry-go"
 )
 
@@ -30,30 +30,10 @@ func NewAppInterfaceWithSentry[T any](base AppInterface[T], instance string, spa
 	if len(spanDecorator) > 0 && spanDecorator[0] != nil {
 		d._spanDecorator = spanDecorator[0]
 	} else {
-		d._spanDecorator = d._defaultSpanDecorator
+		d._spanDecorator = helpers.SpanDecorator
 	}
 
 	return d
-}
-
-func (_d AppInterfaceWithSentry[T]) _defaultSpanDecorator(span *sentry.Span, params, results map[string]interface{}) {
-	for p := range params {
-		switch params[p].(type) {
-		case context.Context:
-		default:
-			val, _ := json.Marshal(params[p])
-			span.SetTag("param."+p, string(val))
-		}
-	}
-
-	for p := range results {
-		switch results[p].(type) {
-		case context.Context:
-		default:
-			val, _ := json.Marshal(results[p])
-			span.SetTag("result."+p, string(val))
-		}
-	}
 }
 
 // GenFullGreeting implements AppInterface
@@ -67,11 +47,6 @@ func (_d AppInterfaceWithSentry[T]) GenFullGreeting(ctx context.Context, name T)
 			"name": name}, map[string]interface{}{
 			"greeting": greeting,
 			"err":      err})
-		if err != nil {
-			span.SetTag("event", "error")
-			span.SetTag("message", err.Error())
-		}
-
 		span.Finish()
 	}()
 	return _d.AppInterface.GenFullGreeting(ctx, name)
@@ -101,11 +76,6 @@ func (_d AppInterfaceWithSentry[T]) SetGreeting(ctx context.Context, greeting T)
 			"ctx":      ctx,
 			"greeting": greeting}, map[string]interface{}{
 			"err": err})
-		if err != nil {
-			span.SetTag("event", "error")
-			span.SetTag("message", err.Error())
-		}
-
 		span.Finish()
 	}()
 	return _d.AppInterface.SetGreeting(ctx, greeting)
