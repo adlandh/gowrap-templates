@@ -6,20 +6,21 @@ import (
 	"net/http"
 
 	"github.com/adlandh/gowrap-templates/helpers"
-	"github.com/getsentry/sentry-go"
 	"github.com/goccy/go-json"
 	"github.com/labstack/echo/v4"
+	"go.opentelemetry.io/otel/attribute"
+	"go.opentelemetry.io/otel/trace"
 )
 
-func SetTag(span *sentry.Span, tag, value string) {
+func SetTag(span trace.Span, tag, value string) {
 	if tag == "" || value == "" {
 		return
 	}
 
-	span.SetTag(helpers.PrepareTagName(tag), helpers.PrepareTagValue(value))
+	span.SetAttributes(attribute.String(helpers.PrepareTagName(tag), helpers.PrepareTagValue(value)))
 }
 
-func SetErrorTags(span *sentry.Span, err error) {
+func SetErrorTags(span trace.Span, err error) {
 	if err == nil {
 		return
 	}
@@ -27,7 +28,7 @@ func SetErrorTags(span *sentry.Span, err error) {
 	SetTag(span, "message", err.Error())
 }
 
-func SpanDecorator(span *sentry.Span, params, results map[string]interface{}) {
+func SpanDecorator(span trace.Span, params, results map[string]interface{}) {
 	for p, v := range params {
 		decorateTag(span, "param", p, v)
 	}
@@ -37,7 +38,7 @@ func SpanDecorator(span *sentry.Span, params, results map[string]interface{}) {
 	}
 }
 
-func decorateTag(span *sentry.Span, prefix string, p string, v any) {
+func decorateTag(span trace.Span, prefix string, p string, v any) {
 	switch v.(type) {
 	case context.Context:
 	case io.Reader:
@@ -54,6 +55,7 @@ func decorateTag(span *sentry.Span, prefix string, p string, v any) {
 		SetTag(span, prefix+"."+p, string(v.([]byte)))
 	case error:
 		if v.(error) != nil {
+			span.RecordError(v.(error))
 			SetTag(span, prefix+"."+p, v.(error).Error())
 			SetErrorTags(span, v.(error))
 		}
