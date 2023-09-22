@@ -31,7 +31,7 @@ func New{{$decorator}}{{.Interface.Generics.Types}}(base {{.Interface.Type}}{{$.
         {{- if $method.HasResults}}
           {{- if $method.ReturnsError}}
             if err != nil {
-              _d._log.Error("{{$decorator}}: method {{$method.Name}} returned an error", zap.Error(err), zap.Any("result", {{$method.ResultsMap}}))
+              _d._log.Warn("{{$decorator}}: method {{$method.Name}} returned an error", zap.Error(err), zap.Any("result", {{$method.ResultsMap}}))
             } else {
               _d._log.Debug("{{$decorator}}: method {{$method.Name}} finished", zap.Any("result", {{$method.ResultsMap}}))
             }
