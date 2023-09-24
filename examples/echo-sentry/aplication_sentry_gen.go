@@ -16,8 +16,8 @@ import (
 // AppInterfaceWithSentry implements AppInterface interface instrumented with opentracing spans
 type AppInterfaceWithSentry[T any] struct {
 	AppInterface[T]
-	_instance      string
 	_spanDecorator func(span *sentry.Span, params, results map[string]interface{})
+	_instance      string
 }
 
 // NewAppInterfaceWithSentry returns AppInterfaceWithSentry

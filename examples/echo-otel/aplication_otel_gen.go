@@ -17,8 +17,8 @@ import (
 // AppInterfaceWithTracing implements AppInterface interface instrumented with opentracing spans
 type AppInterfaceWithTracing[T any] struct {
 	AppInterface[T]
-	_instance      string
 	_spanDecorator func(span trace.Span, params, results map[string]interface{})
+	_instance      string
 }
 
 // NewAppInterfaceWithTracing returns AppInterfaceWithTracing

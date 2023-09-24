@@ -16,8 +16,8 @@ import (
 // ServerInterfaceWithTracing implements ServerInterface interface instrumented with opentracing spans
 type ServerInterfaceWithTracing struct {
 	ServerInterface
-	_instance      string
 	_spanDecorator func(span trace.Span, params, results map[string]interface{})
+	_instance      string
 }
 
 // NewServerInterfaceWithTracing returns ServerInterfaceWithTracing
