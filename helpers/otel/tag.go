@@ -39,25 +39,25 @@ func SpanDecorator(span trace.Span, params, results map[string]interface{}) {
 }
 
 func decorateTag(span trace.Span, prefix string, p string, v any) {
-	switch v.(type) {
+	switch v := v.(type) {
 	case context.Context:
 	case io.Reader:
 	case io.Writer:
 	case echo.Context:
 	case *http.Request:
-		SetTag(span, prefix+"."+p+".method", v.(*http.Request).Method)
-		val, _ := json.Marshal(v.(*http.Request).Header)
+		SetTag(span, prefix+"."+p+".method", v.Method)
+		val, _ := json.Marshal(v.Header)
 		SetTag(span, prefix+"."+p+".headers", string(val))
 	case *http.Response:
-		val, _ := json.Marshal(v.(*http.Response).Header)
+		val, _ := json.Marshal(v.Header)
 		SetTag(span, prefix+"."+p+".headers", string(val))
 	case []byte:
-		SetTag(span, prefix+"."+p, string(v.([]byte)))
+		SetTag(span, prefix+"."+p, string(v))
 	case error:
-		if v.(error) != nil {
-			span.RecordError(v.(error))
-			SetTag(span, prefix+"."+p, v.(error).Error())
-			SetErrorTags(span, v.(error))
+		if v != nil {
+			span.RecordError(v)
+			SetTag(span, prefix+"."+p, v.Error())
+			SetErrorTags(span, v)
 		}
 	default:
 		val, _ := json.Marshal(v)
