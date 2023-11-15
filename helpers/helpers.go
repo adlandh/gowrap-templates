@@ -3,23 +3,25 @@ package helpers
 import "strings"
 
 func LimitString(str string, size int) string {
-	if size <= 0 || len(str) <= size {
+	result := []rune(str)
+	if size <= 0 || len(result) <= size {
 		return str
 	}
 
-	return str[:size]
+	return string(result[:size])
 }
 
 func LimitStringWithDots(str string, size int) string {
-	if size <= 0 || len(str) <= size {
+	result := []rune(str)
+	if size <= 0 || len(result) <= size {
 		return str
 	}
 
-	return str[:size-3] + "..."
+	return string(result[:size-3]) + "..."
 }
 
 func PrepareTagValue(str string) string {
-	str = strings.Replace(str, "\n", " ", -1)
+	str = strings.ReplaceAll(str, "\n", " ")
 	return LimitStringWithDots(str, 200)
 }
 
