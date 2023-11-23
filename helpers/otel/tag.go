@@ -1,4 +1,5 @@
-package sentry
+// Package otel provides helpers for OpenTelemetry wrappers
+package otel
 
 import (
 	"context"
@@ -24,6 +25,7 @@ func SetErrorTags(span trace.Span, err error) {
 	if err == nil {
 		return
 	}
+
 	SetTag(span, "event", "error")
 	SetTag(span, "message", err.Error())
 }
@@ -38,6 +40,7 @@ func SpanDecorator(span trace.Span, params, results map[string]interface{}) {
 	}
 }
 
+//nolint:cyclop
 func decorateTag(span trace.Span, prefix string, p string, v any) {
 	switch v := v.(type) {
 	case context.Context:
@@ -45,21 +48,35 @@ func decorateTag(span trace.Span, prefix string, p string, v any) {
 	case io.Writer:
 	case echo.Context:
 	case *http.Request:
+		if v == nil {
+			return
+		}
+
 		SetTag(span, prefix+"."+p+".method", v.Method)
 		val, _ := json.Marshal(v.Header)
 		SetTag(span, prefix+"."+p+".headers", string(val))
 	case *http.Response:
+		if v == nil {
+			return
+		}
+
 		val, _ := json.Marshal(v.Header)
 		SetTag(span, prefix+"."+p+".headers", string(val))
 	case []byte:
 		SetTag(span, prefix+"."+p, string(v))
 	case error:
-		if v != nil {
-			span.RecordError(v)
-			SetTag(span, prefix+"."+p, v.Error())
-			SetErrorTags(span, v)
+		if v == nil {
+			return
 		}
+
+		span.RecordError(v)
+		SetTag(span, prefix+"."+p, v.Error())
+		SetErrorTags(span, v)
 	default:
+		if v == nil {
+			return
+		}
+
 		val, _ := json.Marshal(v)
 		SetTag(span, "param."+p, string(val))
 	}

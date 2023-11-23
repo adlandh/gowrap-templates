@@ -1,3 +1,4 @@
+// Package sentry provides helpers for sentry wrappers
 package sentry
 
 import (
@@ -23,6 +24,7 @@ func SetErrorTags(span *sentry.Span, err error) {
 	if err == nil {
 		return
 	}
+
 	SetTag(span, "event", "error")
 	SetTag(span, "message", err.Error())
 }
@@ -37,6 +39,7 @@ func SpanDecorator(span *sentry.Span, params, results map[string]interface{}) {
 	}
 }
 
+//nolint:cyclop
 func decorateTag(span *sentry.Span, prefix string, p string, v any) {
 	switch v := v.(type) {
 	case context.Context:
@@ -44,20 +47,38 @@ func decorateTag(span *sentry.Span, prefix string, p string, v any) {
 	case io.Writer:
 	case echo.Context:
 	case *http.Request:
+		if v == nil {
+			return
+		}
+
 		SetTag(span, prefix+"."+p+".method", v.Method)
 		val, _ := json.Marshal(v.Header)
 		SetTag(span, prefix+"."+p+".headers", string(val))
 	case *http.Response:
+		if v == nil {
+			return
+		}
+
 		val, _ := json.Marshal(v.Header)
 		SetTag(span, prefix+"."+p+".headers", string(val))
 	case []byte:
+		if v == nil {
+			return
+		}
+
 		SetTag(span, prefix+"."+p, string(v))
 	case error:
-		if v != nil {
-			SetTag(span, prefix+"."+p, v.Error())
-			SetErrorTags(span, v)
+		if v == nil {
+			return
 		}
+
+		SetTag(span, prefix+"."+p, v.Error())
+		SetErrorTags(span, v)
 	default:
+		if v == nil {
+			return
+		}
+
 		val, _ := json.Marshal(v)
 		SetTag(span, "param."+p, string(val))
 	}
