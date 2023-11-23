@@ -2,8 +2,6 @@ module github.com/adlandh/gowrap-templates
 
 go 1.21
 
-toolchain go1.21.4
-
 require (
 	github.com/adlandh/echo-otel-middleware v1.0.4
 	github.com/adlandh/echo-sentry-middleware v1.0.3
