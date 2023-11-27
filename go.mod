@@ -4,7 +4,7 @@ go 1.21
 
 require (
 	github.com/adlandh/echo-otel-middleware v1.0.4
-	github.com/adlandh/echo-sentry-middleware v1.0.3
+	github.com/adlandh/echo-sentry-middleware v1.0.5
 	github.com/getsentry/sentry-go v0.25.0
 	github.com/goccy/go-json v0.10.2
 	github.com/labstack/echo/v4 v4.11.3
