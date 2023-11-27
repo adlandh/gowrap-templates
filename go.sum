@@ -1,6 +1,6 @@
 github.com/RaveNoX/go-jsoncommentstrip v1.0.0/go.mod h1:78ihd09MekBnJnxpICcwzCMzGrKSKYe4AqU6PDYYpjk=
-github.com/adlandh/echo-otel-middleware v1.0.4 h1:snvGFCccrf6biJ8JPTCIphmjOMC8fN5tNGu8QS3NG2w=
-github.com/adlandh/echo-otel-middleware v1.0.4/go.mod h1:bFzFMpUuIRGIsy3X90VPJAlCWJBFEalLusQyNlnQi9Y=
+github.com/adlandh/echo-otel-middleware v1.0.5 h1:wB97UwiMmYD07Mw4QeA7t3h6X07Lhlnh/KW+nTeRv7U=
+github.com/adlandh/echo-otel-middleware v1.0.5/go.mod h1:bFzFMpUuIRGIsy3X90VPJAlCWJBFEalLusQyNlnQi9Y=
 github.com/adlandh/echo-sentry-middleware v1.0.5 h1:dJbSjU2ZEgaUbXLvrrzfU60QXyW+2vjEDO7U9pvWrmw=
 github.com/adlandh/echo-sentry-middleware v1.0.5/go.mod h1:aCVEnBNTaTDcGUbW1Nfk3mVbZNpN2rPGdl4++QNnMNc=
 github.com/adlandh/response-dumper v1.0.1 h1:U71jU9RATWSR9BX2Q+Mfqfn7pqhKaXRYaR5dpAVXm6M=
