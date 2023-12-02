@@ -3,5 +3,5 @@ version = 1
 [[analyzers]]
 name = "go"
 
-[analyzers.meta]
-import_root = "github.com/adlandh/gowrap-templates"
+  [analyzers.meta]
+  import_root = "github.com/adlandh/gowrap-templates"
