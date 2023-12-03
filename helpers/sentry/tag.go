@@ -80,6 +80,6 @@ func decorateTag(span *sentry.Span, prefix string, p string, v any) {
 		}
 
 		val, _ := json.Marshal(v)
-		SetTag(span, "param."+p, string(val))
+		SetTag(span, prefix+"."+p, string(val))
 	}
 }
