@@ -4,8 +4,6 @@
 
 package main
 
-//go:generate gowrap gen -p github.com/adlandh/gowrap-templates/examples/echo-otel -i AppInterface -t https://raw.githubusercontent.com/adlandh/gowrap-templates/main/otel.gotmpl -o aplication_otel_gen.go -l ""
-
 import (
 	"context"
 

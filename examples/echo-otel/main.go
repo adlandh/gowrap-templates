@@ -11,6 +11,10 @@ import (
 	semconv "go.opentelemetry.io/otel/semconv/v1.21.0"
 )
 
+//go:generate oapi-codegen -old-config-style -generate types,server -o "openapi_gen.go" -package "main" "api.yaml"
+//go:generate gowrap gen -i ServerInterface -t https://raw.githubusercontent.com/adlandh/gowrap-templates/main/echo-otel.gotmpl -o openapi_otel_gen.go -g
+//go:generate gowrap gen -i AppInterface -t https://raw.githubusercontent.com/adlandh/gowrap-templates/main/otel.gotmpl -o aplication_otel_gen.go -g
+
 func main() {
 	// Create otel exporter
 	exp, err := jaeger.New(jaeger.WithCollectorEndpoint(jaeger.WithEndpoint("http://localhost:14268/api/traces")))

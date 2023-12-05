@@ -30,12 +30,18 @@ func SetErrorTags(span *sentry.Span, err error) {
 }
 
 func SpanDecorator(span *sentry.Span, params, results map[string]interface{}) {
+	if span == nil {
+		return
+	}
+
+	span.Status = sentry.SpanStatusOK
+
 	for p, v := range params {
-		decorateTag(span, "param", p, v)
+		decorateTag(span, helpers.ParamPrefix, p, v)
 	}
 
 	for p, v := range results {
-		decorateTag(span, "result", p, v)
+		decorateTag(span, helpers.ResultPrefix, p, v)
 	}
 }
 
@@ -73,7 +79,11 @@ func decorateTag(span *sentry.Span, prefix string, p string, v any) {
 		}
 
 		SetTag(span, prefix+"."+p, v.Error())
-		SetErrorTags(span, v)
+
+		if prefix == helpers.ResultPrefix {
+			span.Status = sentry.SpanStatusInternalError
+			SetErrorTags(span, v)
+		}
 	default:
 		if v == nil {
 			return

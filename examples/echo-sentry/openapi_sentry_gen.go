@@ -4,8 +4,6 @@
 
 package main
 
-//go:generate gowrap gen -p github.com/adlandh/gowrap-templates/examples/echo-sentry -i ServerInterface -t https://raw.githubusercontent.com/adlandh/gowrap-templates/main/echo-sentry.gotmpl -o openapi_sentry_gen.go -l ""
-
 import (
 	helpers "github.com/adlandh/gowrap-templates/helpers/sentry"
 	"github.com/getsentry/sentry-go"

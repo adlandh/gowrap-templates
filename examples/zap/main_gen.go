@@ -4,8 +4,6 @@
 
 package main
 
-//go:generate gowrap gen -p github.com/adlandh/gowrap-templates/examples/zap -i SomeInterface -t https://raw.githubusercontent.com/adlandh/gowrap-templates/main/zap.gotmpl -o main_gen.go -l ""
-
 import (
 	"go.uber.org/zap"
 )

@@ -5,3 +5,5 @@ Various templates for [GoWrap](https://github.com/hexdigest/gowrap)
 - otel.gotmpl - decorator with OpenTelemetry exporter for any interfaces except echo handlers
 - sentry.gotmpl - decorator with Sentry Performance Monitoring for any interfaces except echo handlers
 - zap.gotmpl - decorator with [Zap Logger](https://github.com/uber-go/zap)
+
+[Examples](./examples)

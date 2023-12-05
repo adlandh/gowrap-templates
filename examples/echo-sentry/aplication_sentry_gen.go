@@ -4,8 +4,6 @@
 
 package main
 
-//go:generate gowrap gen -p github.com/adlandh/gowrap-templates/examples/echo-sentry -i AppInterface -t https://raw.githubusercontent.com/adlandh/gowrap-templates/main/sentry.gotmpl -o aplication_sentry_gen.go -l ""
-
 import (
 	"context"
 

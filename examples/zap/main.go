@@ -6,6 +6,8 @@ import (
 	"go.uber.org/zap"
 )
 
+//go:generate gowrap gen -i SomeInterface -t https://raw.githubusercontent.com/adlandh/gowrap-templates/main/zap.gotmpl -o main_gen.go -l "" -g
+
 type SomeInterface[T any] interface {
 	SetGreeting(greeting T) (err error)
 	Run(name T) (err error)

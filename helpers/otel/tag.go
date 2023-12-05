@@ -31,12 +31,16 @@ func SetErrorTags(span trace.Span, err error) {
 }
 
 func SpanDecorator(span trace.Span, params, results map[string]interface{}) {
+	if span == nil {
+		return
+	}
+
 	for p, v := range params {
-		decorateTag(span, "param", p, v)
+		decorateTag(span, helpers.ParamPrefix, p, v)
 	}
 
 	for p, v := range results {
-		decorateTag(span, "result", p, v)
+		decorateTag(span, helpers.ResultPrefix, p, v)
 	}
 }
 

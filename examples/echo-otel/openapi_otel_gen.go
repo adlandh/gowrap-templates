@@ -4,8 +4,6 @@
 
 package main
 
-//go:generate gowrap gen -p github.com/adlandh/gowrap-templates/examples/echo-otel -i ServerInterface -t https://raw.githubusercontent.com/adlandh/gowrap-templates/main/echo-otel.gotmpl -o openapi_otel_gen.go -l ""
-
 import (
 	helpers "github.com/adlandh/gowrap-templates/helpers/otel"
 	"github.com/labstack/echo/v4"
