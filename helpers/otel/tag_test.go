@@ -2,6 +2,7 @@ package otel
 
 import (
 	"context"
+	"errors"
 	"net/http"
 	"testing"
 
@@ -70,5 +71,19 @@ func TestDecorateTag(t *testing.T) {
 
 		decorateTag(span, "test", "test", v)
 		SpanDecorator(span, nil, nil)
+	})
+
+	t.Run("test decorate tag with error", func(t *testing.T) {
+		defer func() {
+			if r := recover(); r != nil {
+				t.Errorf("expected nil, got %v", r)
+			}
+		}()
+
+		v := errors.New("test")
+
+		SpanDecorator(span, nil, map[string]interface{}{
+			"error": v,
+		})
 	})
 }

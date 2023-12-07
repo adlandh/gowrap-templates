@@ -10,6 +10,7 @@ import (
 	"github.com/goccy/go-json"
 	"github.com/labstack/echo/v4"
 	"go.opentelemetry.io/otel/attribute"
+	"go.opentelemetry.io/otel/codes"
 	"go.opentelemetry.io/otel/trace"
 )
 
@@ -74,6 +75,7 @@ func decorateTag(span trace.Span, prefix string, p string, v any) {
 		}
 
 		span.RecordError(v)
+		span.SetStatus(codes.Error, v.Error())
 		SetTag(span, prefix+"."+p, v.Error())
 		SetErrorTags(span, v)
 	default:
