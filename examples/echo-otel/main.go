@@ -8,7 +8,7 @@ import (
 	"go.opentelemetry.io/otel/propagation"
 	"go.opentelemetry.io/otel/sdk/resource"
 	"go.opentelemetry.io/otel/sdk/trace"
-	semconv "go.opentelemetry.io/otel/semconv/v1.21.0"
+	semconv "go.opentelemetry.io/otel/semconv/v1.22.0"
 )
 
 //go:generate oapi-codegen -old-config-style -generate types,server -o "openapi_gen.go" -package "main" "api.yaml"
@@ -23,16 +23,10 @@ func main() {
 	}
 
 	// Create otel resource
-	res, err := resource.Merge(
-		resource.Default(),
-		resource.NewWithAttributes(
-			semconv.SchemaURL,
-			semconv.ServiceNameKey.String("echo-example"),
-		),
+	res := resource.NewWithAttributes(
+		semconv.SchemaURL,
+		semconv.ServiceNameKey.String("echo-example"),
 	)
-	if err != nil {
-		panic(err)
-	}
 
 	// Create trace provider
 	tp := trace.NewTracerProvider(
