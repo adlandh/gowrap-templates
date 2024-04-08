@@ -9,8 +9,8 @@ require (
 	github.com/goccy/go-json v0.10.2
 	github.com/labstack/echo/v4 v4.11.4
 	github.com/stretchr/testify v1.9.0
-	go.opentelemetry.io/otel v1.24.0
-	go.opentelemetry.io/otel/trace v1.24.0
+	go.opentelemetry.io/otel v1.25.0
+	go.opentelemetry.io/otel/trace v1.25.0
 )
 
 require (
