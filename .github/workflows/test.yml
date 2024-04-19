@@ -22,12 +22,10 @@ jobs:
 
       - name: Run tests for otel helpers
         run: go test -race -coverprofile=../../coverage1.txt -covermode=atomic ./...
-        with:
-          working-directory: helpers/otel
+        working-directory: helpers/otel
       - name: Run tests for sentry helpers
         run: cd helpers/sentry && go test -race -coverprofile=../../coverage2.txt -covermode=atomic ./...
-        with:
-          working-directory: helpers/sentry
+        working-directory: helpers/sentry
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
