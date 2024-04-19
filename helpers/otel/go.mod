@@ -2,10 +2,8 @@ module github.com/adlandh/gowrap-templates/helpers/otel
 
 go 1.22.2
 
-replace github.com/adlandh/gowrap-templates/helpers => ../
-
 require (
-	github.com/adlandh/gowrap-templates/helpers v0.0.0-00010101000000-000000000000
+	github.com/adlandh/gowrap-templates/helpers v1.1.0
 	github.com/goccy/go-json v0.10.2
 	github.com/labstack/echo/v4 v4.12.0
 	go.opentelemetry.io/otel v1.25.0
