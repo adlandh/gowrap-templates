@@ -3,7 +3,7 @@ pre-push:
   commands:
     lint:
       glob: "*.go"
-      run: golangci-lint run
+      run: cd helpers && golangci-lint run && cd otel && golangci-lint run && cd ../sentry && golangci-lint run
     test:
       glob: "*.go"
-      run: go test -cover -race ./...
+      run: cd helpers/otel && go test -cover -race ./... && cd ../sentry && go test -cover -race ./...
