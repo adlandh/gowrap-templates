@@ -1,7 +1,10 @@
 // Package helpers provides helper functions
 package helpers
 
-import "strings"
+import (
+	"strings"
+	"unicode/utf8"
+)
 
 const (
 	ParamPrefix  = "param"
@@ -9,21 +12,32 @@ const (
 )
 
 func LimitString(str string, size int) string {
-	result := []rune(str)
-	if size <= 0 || len(result) <= size {
+	if len(str) <= size {
 		return str
 	}
 
-	return string(result[:size])
+	bytes := []byte(str)
+
+	if len(bytes) <= size {
+		return str
+	}
+
+	validBytes := bytes[:size]
+	for !utf8.Valid(validBytes) {
+		validBytes = validBytes[:len(validBytes)-1]
+	}
+
+	return string(validBytes)
 }
 
 func LimitStringWithDots(str string, size int) string {
-	result := []rune(str)
-	if size <= 0 || len(result) <= size {
-		return str
+	if size <= 10 {
+		return LimitString(str, size)
 	}
 
-	return string(result[:size-3]) + "..."
+	result := LimitString(str, size-3)
+
+	return result + "..."
 }
 
 func PrepareTagValue(str string) string {
