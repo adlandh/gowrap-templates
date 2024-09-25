@@ -37,6 +37,10 @@ func LimitStringWithDots(str string, size int) string {
 
 	result := LimitString(str, size-3)
 
+	if str == result {
+		return str
+	}
+
 	return result + "..."
 }
 

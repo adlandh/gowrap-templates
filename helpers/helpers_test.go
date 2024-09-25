@@ -25,4 +25,12 @@ func TestLimitStringWithDots(t *testing.T) {
 
 	require.GreaterOrEqual(t, maxBytes, len(result))
 	require.True(t, utf8.ValidString(result))
+
+	maxBytes = 200
+
+	result = LimitStringWithDots(originalStr, maxBytes)
+
+	require.GreaterOrEqual(t, maxBytes, len(result))
+	require.True(t, utf8.ValidString(result))
+	require.Equal(t, originalStr, result)
 }
