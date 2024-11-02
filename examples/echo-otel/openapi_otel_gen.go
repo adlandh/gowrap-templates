@@ -21,6 +21,10 @@ type ServerInterfaceWithTracing struct {
 
 // NewServerInterfaceWithTracing returns ServerInterfaceWithTracing
 func NewServerInterfaceWithTracing(base ServerInterface, instance string, spanDecorator ...func(span trace.Span, params, results map[string]interface{})) ServerInterfaceWithTracing {
+	if instance == "" {
+		instance = "handlers"
+	}
+
 	d := ServerInterfaceWithTracing{
 		ServerInterface: base,
 		_instance:       instance,
@@ -33,6 +37,11 @@ func NewServerInterfaceWithTracing(base ServerInterface, instance string, spanDe
 	}
 
 	return d
+}
+
+// DecorateServerInterfaceWithTracing returns ServerInterfaceWithTracing. Useful for uber fx
+func DecorateServerInterfaceWithTracing(base ServerInterface) ServerInterfaceWithTracing {
+	return NewServerInterfaceWithTracing(base, "")
 }
 
 // GetGreeting implements ServerInterface
