@@ -4,6 +4,7 @@ import (
 )
 
 {{ $decorator := (or .Vars.DecoratorName (printf "%sWithSentry" .Interface.Name)) }}
+{{ $defaultInstanceName := (or .Vars.InstanceName .Interface.Name) }}
 
 // {{$decorator}} implements {{.Interface.Type}} interface instrumented with opentracing spans
 type {{$decorator}}{{.Interface.Generics.Types}} struct {
@@ -14,6 +15,10 @@ type {{$decorator}}{{.Interface.Generics.Types}} struct {
 
 // New{{$decorator}} returns {{$decorator}}
 func New{{$decorator}}{{.Interface.Generics.Types}} (base {{.Interface.Type}}{{$.Interface.Generics.Params}}, instance string, spanDecorator ...func(span *sentry.Span, params, results map[string]interface{})) {{$decorator}}{{.Interface.Generics.Params}} {
+    if instance == "" {
+        instance = "{{$defaultInstanceName}}"
+    }
+
     d := {{$decorator}}{{$.Interface.Generics.Params}}  {
         {{.Interface.Name}}: base,
         _instance: instance,
@@ -26,6 +31,11 @@ func New{{$decorator}}{{.Interface.Generics.Types}} (base {{.Interface.Type}}{{$
     }
 
     return d
+}
+
+// Decorate{{$decorator}} returns {{$decorator}}. Useful for uber fx
+func Decorate{{$decorator}}{{.Interface.Generics.Types}} (base {{.Interface.Type}}{{$.Interface.Generics.Params}}) {{$decorator}}{{.Interface.Generics.Params}} {
+    return New{{$decorator}}{{.Interface.Generics.Params}}(base, "")
 }
 
 {{range $method := .Interface.Methods}}
