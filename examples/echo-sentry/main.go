@@ -11,7 +11,7 @@ import (
 
 //go:generate oapi-codegen -old-config-style -generate types,server -o "openapi_gen.go" -package "main" "api.yaml"
 //go:generate gowrap gen -i ServerInterface -t https://raw.githubusercontent.com/adlandh/gowrap-templates/main/echo-sentry.gotmpl -o openapi_sentry_gen.go -g
-//go:generate gowrap gen -i AppInterface -t https://raw.githubusercontent.com/adlandh/gowrap-templates/main/sentry.gotmpl -o aplication_sentry_gen.go -g
+//go:generate gowrap gen -i AppInterface -t https://raw.githubusercontent.com/adlandh/gowrap-templates/main/sentry.gotmpl -o aplication_sentry_gen.go -g -v InstanceName=application
 
 func main() {
 	// To initialize Sentry's handler, you need to initialize Sentry itself beforehand

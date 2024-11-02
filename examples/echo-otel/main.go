@@ -13,7 +13,7 @@ import (
 
 //go:generate oapi-codegen -old-config-style -generate types,server -o "openapi_gen.go" -package "main" "api.yaml"
 //go:generate gowrap gen -i ServerInterface -t https://raw.githubusercontent.com/adlandh/gowrap-templates/main/echo-otel.gotmpl -o openapi_otel_gen.go -g
-//go:generate gowrap gen -i AppInterface -t https://raw.githubusercontent.com/adlandh/gowrap-templates/main/otel.gotmpl -o aplication_otel_gen.go -g
+//go:generate gowrap gen -i AppInterface -t https://raw.githubusercontent.com/adlandh/gowrap-templates/main/otel.gotmpl -o aplication_otel_gen.go -g -v InstanceName=application
 
 func main() {
 	// Create otel exporter
