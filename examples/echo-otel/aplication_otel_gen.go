@@ -39,8 +39,8 @@ func NewAppInterfaceWithTracing[T any](base AppInterface[T], instance string, sp
 	return d
 }
 
-// DecorateAppInterfaceWithTracing returns AppInterfaceWithTracing. Useful for uber fx
-func DecorateAppInterfaceWithTracing[T any](base AppInterface[T]) AppInterfaceWithTracing[T] {
+// DecorateAppInterfaceWithTracing returns AppInterface with tracing decorators. Useful for uber fx
+func DecorateAppInterfaceWithTracing[T any](base AppInterface[T]) AppInterface[T] {
 	return NewAppInterfaceWithTracing[T](base, "")
 }
 

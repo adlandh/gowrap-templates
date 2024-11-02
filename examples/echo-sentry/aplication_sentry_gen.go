@@ -38,8 +38,8 @@ func NewAppInterfaceWithSentry[T any](base AppInterface[T], instance string, spa
 	return d
 }
 
-// DecorateAppInterfaceWithSentry returns AppInterfaceWithSentry. Useful for uber fx
-func DecorateAppInterfaceWithSentry[T any](base AppInterface[T]) AppInterfaceWithSentry[T] {
+// DecorateAppInterfaceWithSentry returns AppInterface with tracing decorators. Useful for uber fx
+func DecorateAppInterfaceWithSentry[T any](base AppInterface[T]) AppInterface[T] {
 	return NewAppInterfaceWithSentry[T](base, "")
 }
 

@@ -39,8 +39,8 @@ func NewServerInterfaceWithTracing(base ServerInterface, instance string, spanDe
 	return d
 }
 
-// DecorateServerInterfaceWithTracing returns ServerInterfaceWithTracing. Useful for uber fx
-func DecorateServerInterfaceWithTracing(base ServerInterface) ServerInterfaceWithTracing {
+// DecorateServerInterfaceWithTracing returns ServerInterface with tracing decorators. Useful for uber fx
+func DecorateServerInterfaceWithTracing(base ServerInterface) ServerInterface {
 	return NewServerInterfaceWithTracing(base, "")
 }
 
