@@ -7,6 +7,7 @@ import (
 )
 
 {{ $decorator := (or .Vars.DecoratorName (printf "%sWithTracing" .Interface.Name)) }}
+{{ $defaultInstanceName := (or .Vars.InstanceName .Interface.Name) }}
 
 // {{$decorator}} implements {{.Interface.Type}} interface instrumented with opentracing spans
 type {{$decorator}} struct {
@@ -17,6 +18,10 @@ type {{$decorator}} struct {
 
 // New{{$decorator}} returns {{$decorator}}
 func New{{$decorator}} (base {{.Interface.Type}}, instance string, spanDecorator ...func(span trace.Span, params, results map[string]interface{})) {{$decorator}} {
+    if instance == "" {
+        instance = "{{$defaultInstanceName}}"
+    }
+
     d := {{$decorator}} {
         {{.Interface.Name}}: base,
         _instance: instance,
@@ -30,6 +35,12 @@ func New{{$decorator}} (base {{.Interface.Type}}, instance string, spanDecorator
 
     return d
 }
+
+// Decorate{{$decorator}} returns {{$decorator}}. Useful for uber fx
+func Decorate{{$decorator}} (base {{.Interface.Type}}) {{$decorator}} {
+    return New{{$decorator}}(base, "")
+}
+
 
 {{range $method := .Interface.Methods}}
     {{if $method.AcceptsContext}}
