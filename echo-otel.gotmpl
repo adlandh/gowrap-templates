@@ -36,8 +36,8 @@ func New{{$decorator}} (base {{.Interface.Type}}, instance string, spanDecorator
     return d
 }
 
-// Decorate{{$decorator}} returns {{$decorator}}. Useful for uber fx
-func Decorate{{$decorator}} (base {{.Interface.Type}}) {{$decorator}} {
+// Decorate{{$decorator}} returns {{.Interface.Type}} with tracing decorators. Useful for uber fx
+func Decorate{{$decorator}} (base {{.Interface.Type}}) {{.Interface.Type}} {
     return New{{$decorator}}(base, "")
 }
 

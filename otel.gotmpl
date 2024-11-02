@@ -34,8 +34,8 @@ func New{{$decorator}}{{.Interface.Generics.Types}} (base {{.Interface.Type}}{{$
   return d
 }
 
-// Decorate{{$decorator}} returns {{$decorator}}. Useful for uber fx
-func Decorate{{$decorator}}{{.Interface.Generics.Types}} (base {{.Interface.Type}}{{$.Interface.Generics.Params}}) {{$decorator}}{{.Interface.Generics.Params}} {
+// Decorate{{$decorator}} returns {{.Interface.Type}} with tracing decorators. Useful for uber fx
+func Decorate{{$decorator}}{{.Interface.Generics.Types}} (base {{.Interface.Type}}{{$.Interface.Generics.Params}}) {{.Interface.Type}}{{.Interface.Generics.Params}} {
     return New{{$decorator}}{{.Interface.Generics.Params}}(base, "")
 }
 
