@@ -7,7 +7,7 @@ require (
 	github.com/getsentry/sentry-go v0.29.1
 	github.com/goccy/go-json v0.10.3
 	github.com/labstack/echo/v4 v4.12.0
-	github.com/stretchr/testify v1.9.0
+	github.com/stretchr/testify v1.10.0
 )
 
 require (
