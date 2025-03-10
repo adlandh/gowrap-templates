@@ -6,8 +6,8 @@ require (
 	github.com/adlandh/gowrap-templates/helpers v1.1.3
 	github.com/goccy/go-json v0.10.5
 	github.com/labstack/echo/v4 v4.13.3
-	go.opentelemetry.io/otel v1.34.0
-	go.opentelemetry.io/otel/trace v1.34.0
+	go.opentelemetry.io/otel v1.35.0
+	go.opentelemetry.io/otel/trace v1.35.0
 )
 
 require (
