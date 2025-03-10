@@ -5,7 +5,6 @@ run:
 
 linters:
   disable-all: true
-  fix: true
   enable:
     - bodyclose
     - errcheck
@@ -19,7 +18,7 @@ linters:
     - dupl
     - dupword
     - errorlint
-    - exportloopref
+    - copyloopvar
     - forcetypeassert
     - funlen
     - gocritic
