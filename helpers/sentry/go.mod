@@ -4,7 +4,7 @@ go 1.22.2
 
 require (
 	github.com/adlandh/gowrap-templates/helpers v1.1.3
-	github.com/getsentry/sentry-go v0.32.0
+	github.com/getsentry/sentry-go v0.33.0
 	github.com/goccy/go-json v0.10.5
 	github.com/labstack/echo/v4 v4.13.3
 	github.com/stretchr/testify v1.10.0
