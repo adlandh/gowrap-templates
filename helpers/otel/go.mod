@@ -1,16 +1,17 @@
 module github.com/adlandh/gowrap-templates/helpers/otel
 
-go 1.23.0
+go 1.24.0
 
 require (
 	github.com/adlandh/gowrap-templates/helpers v1.1.3
 	github.com/goccy/go-json v0.10.5
 	github.com/labstack/echo/v4 v4.13.4
-	go.opentelemetry.io/otel v1.38.0
-	go.opentelemetry.io/otel/trace v1.38.0
+	go.opentelemetry.io/otel v1.39.0
+	go.opentelemetry.io/otel/trace v1.39.0
 )
 
 require (
+	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/labstack/gommon v0.4.2 // indirect
 	github.com/mattn/go-colorable v0.1.14 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
