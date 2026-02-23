@@ -15,18 +15,21 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      - name: Download golangci-lint config
+        run: curl -sS https://raw.githubusercontent.com/adlandh/golangci-lint-config/refs/heads/main/.golangci.yml -o .golangci.yml
+
       - name: Lint Code Base (helpers)
-        uses: golangci/golangci-lint-action@v6
+        uses: golangci/golangci-lint-action@v7
         with:
           working-directory: helpers
 
       - name: Lint Code Base (otel)
-        uses: golangci/golangci-lint-action@v6
+        uses: golangci/golangci-lint-action@v7
         with:
           working-directory: helpers/otel
 
       - name: Lint Code Base (sentry)
-        uses: golangci/golangci-lint-action@v6
+        uses: golangci/golangci-lint-action@v7
         with:
           working-directory: helpers/sentry
 
