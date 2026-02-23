@@ -9,7 +9,6 @@ import (
 	"github.com/adlandh/gowrap-templates/helpers"
 	"github.com/getsentry/sentry-go"
 	"github.com/goccy/go-json"
-	"github.com/labstack/echo/v4"
 )
 
 func SetTag(span *sentry.Span, tag, value string) {
@@ -51,7 +50,6 @@ func decorateTag(span *sentry.Span, prefix string, p string, v any) {
 	case context.Context:
 	case io.Reader:
 	case io.Writer:
-	case echo.Context:
 	case *http.Request:
 		if v == nil {
 			return

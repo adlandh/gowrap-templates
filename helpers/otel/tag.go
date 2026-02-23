@@ -8,7 +8,6 @@ import (
 
 	"github.com/adlandh/gowrap-templates/helpers"
 	"github.com/goccy/go-json"
-	"github.com/labstack/echo/v4"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/codes"
 	"go.opentelemetry.io/otel/trace"
@@ -51,7 +50,6 @@ func decorateTag(span trace.Span, prefix string, p string, v any) {
 	case context.Context:
 	case io.Reader:
 	case io.Writer:
-	case echo.Context:
 	case *http.Request:
 		if v == nil {
 			return
