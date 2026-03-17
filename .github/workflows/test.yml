@@ -18,7 +18,7 @@ jobs:
           cache: false
 
       - name: Pulling code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Run tests for otel helpers
         run: go test -race -coverprofile=../../coverage1.txt -covermode=atomic ./...
