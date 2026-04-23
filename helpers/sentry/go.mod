@@ -1,10 +1,10 @@
 module github.com/adlandh/gowrap-templates/helpers/sentry
 
-go 1.24.0
+go 1.25.0
 
 require (
 	github.com/adlandh/gowrap-templates/helpers v1.1.3
-	github.com/getsentry/sentry-go v0.45.1
+	github.com/getsentry/sentry-go v0.46.0
 	github.com/goccy/go-json v0.10.6
 	github.com/stretchr/testify v1.11.1
 )
