@@ -6,12 +6,11 @@ require (
 	github.com/adlandh/gowrap-templates/helpers v1.1.3
 	github.com/getsentry/sentry-go v0.48.0
 	github.com/goccy/go-json v0.10.6
-	github.com/stretchr/testify v1.12.0
+	github.com/stretchr/testify v1.12.1
 )
 
 require (
-	github.com/kr/text v0.2.0 // indirect
+	go.yaml.in/yaml/v3 v3.0.5 // indirect
 	golang.org/x/sys v0.45.0 // indirect
 	golang.org/x/text v0.37.0 // indirect
-	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
