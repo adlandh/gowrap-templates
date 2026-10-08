@@ -1,6 +1,6 @@
 module examples
 
-go 1.21
+go 1.26.0
 
 require (
 	github.com/adlandh/echo-otel-middleware v1.0.5
