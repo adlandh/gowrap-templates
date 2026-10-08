@@ -1,6 +1,6 @@
 module github.com/adlandh/gowrap-templates/helpers/sentry
 
-go 1.25.0
+go 1.26.0
 
 require (
 	github.com/adlandh/gowrap-templates/helpers v1.1.3
