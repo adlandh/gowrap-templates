@@ -5,7 +5,7 @@ go 1.26.0
 require (
 	github.com/adlandh/gowrap-templates/helpers v1.1.3
 	github.com/getsentry/sentry-go v0.50.0
-	github.com/goccy/go-json v0.11.2
+	github.com/goccy/go-json v0.12.0
 	github.com/stretchr/testify v1.12.1
 )
 
